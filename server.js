@@ -6,6 +6,22 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 
+// For deployment
+// for Heroku deployment
+// if ( process.env.NODE_ENV == "production" ) {
+//   app.use(express.static("client/build"));
+// }
+
+// render.com deployment
+if (process.env.NODE_ENV === "production") {
+  //*Set static folder up in production
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+  );
+}
+
 // App config
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -39,7 +55,7 @@ mongoose.connect(
 
 // get requests
 app.get("/", (req, res) => {
-  res.status(200).send("hello world dgfdgsfs");
+  res.status(200).send("Hello this is server");
 });
 
 //download data from database - for retrieving colleciotns from database
